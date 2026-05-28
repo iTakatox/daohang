@@ -2,358 +2,192 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>项目导航</title>
 <meta name="description" content="一站式项目导航，快速访问所有业务工具">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400..800&family=Geist+Mono:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --canvas:    #faf9f8;
-    --surface:   #ffffff;
-    --ink:       #1c1917;
-    --muted:     #78716c;
-    --accent:    #0f766e;
-    --accent-bg: #f0fdfa;
-    --border:    #e7e5e4;
-    --hero-bg:   #0b1120;
-    --hero-text: #f1f5f9;
-    --radius:    20px;
-    --font-sans: "Geist", -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
-    --font-mono: "Geist Mono", "SF Mono", "Cascadia Code", monospace;
-  }
-
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
 
   body {
-    font-family: var(--font-sans);
-    background: var(--canvas);
-    color: var(--ink);
-    min-height: 100dvh;
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Segoe UI", sans-serif;
+    background: #f8f9fa;
+    color: #202124;
+    min-height: 100vh;
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
   }
 
-  /* ── Noise texture ── */
-  .noise {
-    position: fixed; inset: 0; z-index: 9999;
-    pointer-events: none; opacity: 0.028;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    background-size: 256px 256px;
+  /* ── Header ── */
+  header {
+    background: #fff;
+    border-bottom: 1px solid #e8eaed;
+    padding: 20px 24px;
+  }
+  header .wrap {
+    max-width: 1200px; margin: 0 auto;
+    display: flex; align-items: baseline; gap: 12px;
+    flex-wrap: wrap;
+  }
+  header h1 {
+    font-size: 22px; font-weight: 600;
+    color: #202124; letter-spacing: -0.3px;
+  }
+  header span {
+    font-size: 13px; color: #5f6368;
   }
 
-  /* ── Skip link ── */
-  .skip-link {
-    position: fixed; top: 12px; left: 12px; z-index: 10000;
-    background: var(--accent); color: #fff;
-    padding: 8px 16px; border-radius: 8px;
-    font-size: 13px; font-weight: 600;
-    transform: translateY(-130%);
-    transition: transform 0.25s ease;
+  /* ── Main grid ── */
+  main {
+    max-width: 1200px; margin: 0 auto;
+    padding: 28px 24px 48px;
   }
-  .skip-link:focus { transform: translateY(0); outline: 2px solid #5eead4; outline-offset: 2px; }
-
-  /* ════ Hero ════ */
-  .hero {
-    background: var(--hero-bg);
-    padding: clamp(48px, 10vw, 88px) clamp(20px, 6vw, 64px);
-    position: relative; overflow: hidden; isolation: isolate;
-  }
-  .hero::before {
-    content: "";
-    position: absolute; inset: 0; z-index: 0;
-    background:
-      radial-gradient(ellipse 55% 50% at 10% 35%, rgba(15,118,110,0.13) 0%, transparent 55%),
-      radial-gradient(ellipse 45% 65% at 80% 70%, rgba(15,118,110,0.05) 0%, transparent 50%);
-  }
-  /* Subtle diagonal line pattern */
-  .hero::after {
-    content: "";
-    position: absolute; inset: 0; z-index: 0; opacity: 0.18;
-    background: repeating-linear-gradient(
-      105deg,
-      transparent,
-      transparent 2px,
-      rgba(255,255,255,0.03) 2px,
-      rgba(255,255,255,0.03) 3px
-    );
-  }
-  .hero-content {
-    position: relative; z-index: 1;
-    max-width: 1040px;
-  }
-  .hero-label {
-    display: block;
-    font-family: var(--font-mono);
-    font-size: 11px; font-weight: 500;
-    letter-spacing: 2px;
-    color: #5eead4;
-    margin-bottom: 20px;
-  }
-  .hero h1 {
-    font-family: var(--font-sans);
-    font-size: clamp(36px, 7vw, 60px);
-    font-weight: 400; color: var(--hero-text);
-    letter-spacing: -0.02em; line-height: 1.06;
-    text-wrap: balance; margin-bottom: 16px;
-  }
-  .hero h1 strong { font-weight: 800; color: #ffffff; }
-  .hero p {
-    font-size: 16px; color: #94a3b8;
-    max-width: 440px; line-height: 1.55;
-  }
-
-  /* ── Stats ── */
-  .stats-row {
-    display: flex; gap: clamp(24px, 6vw, 48px);
-    margin-top: 42px;
-    position: relative; z-index: 1;
-  }
-  .stat-item { display: flex; flex-direction: column; }
-  .stat-num {
-    font-family: var(--font-mono);
-    font-size: clamp(32px, 5vw, 44px);
-    font-weight: 600; color: #ffffff;
-    line-height: 1; font-variant-numeric: tabular-nums;
-  }
-  .stat-tag {
-    font-size: 11px; color: #64748b;
-    margin-top: 4px; letter-spacing: 0.4px;
-    font-weight: 500;
-  }
-
-  /* ════ Main ════ */
-  .container {
-    max-width: 1040px; margin: 0 auto;
-    padding: clamp(32px, 6vw, 52px) clamp(16px, 4vw, 32px) 60px;
-  }
-  .section-header {
-    display: flex; align-items: baseline; justify-content: space-between;
-    margin-bottom: 24px; flex-wrap: wrap; gap: 8px;
-  }
-  .section-title {
-    font-family: var(--font-mono);
-    font-size: 12px; font-weight: 600; color: var(--muted);
-    text-transform: uppercase; letter-spacing: 1.5px;
-  }
-  .section-count {
-    font-family: var(--font-mono);
-    font-size: 11px; color: #a8a29e; font-variant-numeric: tabular-nums;
-  }
-
-  /* ── 2-col Zig-Zag Grid ── */
   .grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 14px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
   }
-  /* Zig-zag: right-column cards offset down */
-  .grid .card:nth-child(even) { margin-top: 28px; }
 
   /* ── Card ── */
   .card {
-    background: var(--surface);
-    border-radius: var(--radius);
-    padding: 22px 22px 20px 20px;
+    background: #fff;
+    border-radius: 16px;
+    padding: 24px;
     text-decoration: none; color: inherit;
-    display: flex; align-items: center; gap: 16px;
-    border: 1px solid var(--border);
-    position: relative; overflow: hidden;
-    transition:
-      transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
-      box-shadow 0.4s ease,
-      border-color 0.4s ease,
-      background 0.4s ease;
-    box-shadow: 0 1px 2px rgba(28,25,23,0.03);
-    opacity: 0; transform: translateY(20px);
-    animation: cardIn 0.5s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+    display: block;
+    border: 1px solid #e8eaed;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
     -webkit-tap-highlight-color: transparent;
   }
-  @keyframes cardIn { to { opacity: 1; transform: translateY(0); } }
-  .card:nth-child(1) { animation-delay: 0.04s; }
-  .card:nth-child(2) { animation-delay: 0.08s; }
-  .card:nth-child(3) { animation-delay: 0.12s; }
-  .card:nth-child(4) { animation-delay: 0.16s; }
-  .card:nth-child(5) { animation-delay: 0.20s; }
-  .card:nth-child(6) { animation-delay: 0.24s; }
-  .card:nth-child(7) { animation-delay: 0.28s; }
-  .card:nth-child(8) { animation-delay: 0.32s; }
-
-  /* Left accent rail on hover */
-  .card::before {
-    content: "";
-    position: absolute; left: 0; top: 14px; bottom: 14px;
-    width: 3px; border-radius: 0 3px 3px 0;
-    background: var(--accent);
-    transform: scaleY(0);
-    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  .card:hover {
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 6px 20px rgba(0,0,0,0.06);
+    transform: translateY(-2px);
   }
-  .card:hover { transform: translateY(-3px); box-shadow: 0 2px 4px rgba(15,118,110,0.04), 0 10px 28px rgba(15,118,110,0.08); border-color: #99f6e4; background: #fafefc; }
-  .card:hover::before { transform: scaleY(1); }
-  .card:active { transform: scale(0.985); transition: transform 0.08s ease; }
+  .card:active { transform: scale(0.99); }
 
-  /* ── Card badge (Chinese character icon) ── */
-  .card-badge {
-    width: 44px; height: 44px; min-width: 44px;
-    border-radius: 14px;
+  /* ── Icon ── */
+  .card-icon {
+    width: 48px; height: 48px; border-radius: 12px;
     display: flex; align-items: center; justify-content: center;
-    font-size: 20px; font-weight: 700;
-    font-family: var(--font-sans);
-    color: var(--accent);
-    letter-spacing: 0;
-    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    margin-bottom: 16px;
   }
-  .card:hover .card-badge { transform: scale(1.06); }
+  .card-icon svg { width: 26px; height: 26px; }
 
-  /* ── Card body ── */
-  .card-body { flex: 1; min-width: 0; }
+  /* ── Text ── */
   .card-name {
-    font-size: 16px; font-weight: 700; color: var(--ink);
-    letter-spacing: -0.2px; margin-bottom: 1px;
+    font-size: 15px; font-weight: 600; color: #202124;
+    margin-bottom: 2px; letter-spacing: -0.1px;
   }
   .card-domain {
-    font-size: 12px; color: #a8a29e; margin-bottom: 6px;
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    font-size: 12px; color: #5f6368; margin-bottom: 10px;
+    word-break: break-all;
   }
-  .tag {
+  .card-tag {
     display: inline-block;
-    font-family: var(--font-mono);
-    font-size: 10px; font-weight: 500; letter-spacing: 0.3px;
-    padding: 2px 10px; border-radius: 5px;
+    font-size: 11px; font-weight: 500;
+    padding: 2px 10px; border-radius: 4px;
+    letter-spacing: 0.2px;
   }
-  .tag-static { background: #fef3c7; color: #92400e; }
-  .tag-flask  { background: #e0e7ff; color: #3730a3; }
-
-  /* ── Arrow ── */
-  .card-arrow {
-    font-family: var(--font-mono);
-    font-size: 15px; color: #d6d3d1; font-weight: 500;
-    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-    flex-shrink: 0;
-  }
-  .card:hover .card-arrow { color: var(--accent); transform: translate(2px, -2px); }
+  .tag-static { background: #e8f0fe; color: #1967d2; }
+  .tag-flask  { background: #fce8e6; color: #c5221f; }
 
   /* ── Footer ── */
-  .footer {
-    text-align: center; padding: 12px 24px 36px;
-    font-family: var(--font-mono);
-    font-size: 11px; color: #d6d3d1; letter-spacing: 0.2px;
-    font-weight: 500;
+  footer {
+    text-align: center; padding: 12px 24px 32px;
+    font-size: 12px; color: #9aa0a6;
   }
 
-  /* ════ Mobile ════ */
-  @media (max-width: 768px) {
-    .grid {
-      grid-template-columns: 1fr;
-      gap: 10px;
-    }
-    .grid .card:nth-child(even) { margin-top: 0; }
-
-    .card {
-      padding: 16px; gap: 12px;
-      animation: none; opacity: 1; transform: none;
-    }
-    .card-badge {
-      width: 38px; height: 38px; min-width: 38px;
-      border-radius: 12px; font-size: 18px;
-    }
-    .card-name { font-size: 15px; }
-    .card-domain { font-size: 11px; }
-    .card-arrow { font-size: 16px; }
-
-    .hero-label { font-size: 10px; margin-bottom: 16px; }
-    .hero h1 { font-size: 32px; }
-    .hero p { font-size: 14px; }
-    .stats-row { gap: 24px; margin-top: 32px; }
-
-    .container { padding-bottom: 44px; }
-    .section-title { font-size: 11px; }
-
-    .footer { padding: 8px 14px 28px; font-size: 10px; }
+  @media (max-width: 900px) {
+    .grid { grid-template-columns: repeat(2, 1fr); }
   }
-
-  @media (max-width: 380px) {
-    .hero h1 { font-size: 26px; }
-    .hero p { font-size: 13px; }
-    .stats-row { gap: 18px; }
-    .stat-num { font-size: 28px; }
-    .stat-tag { font-size: 10px; }
-    .card-badge { width: 34px; height: 34px; min-width: 34px; font-size: 16px; }
-    .card { padding: 14px; gap: 10px; }
+  @media (max-width: 560px) {
+    header { padding: 16px; }
+    header h1 { font-size: 19px; }
+    main { padding: 16px 12px 36px; }
+    .grid { grid-template-columns: 1fr; gap: 10px; }
+    .card { padding: 18px; border-radius: 14px; }
+    .card-icon { width: 42px; height: 42px; border-radius: 10px; margin-bottom: 12px; }
+    .card-icon svg { width: 22px; height: 22px; }
+    .card-name { font-size: 14px; }
   }
 </style>
 </head>
 <body>
 
-<a href="#grid" class="skip-link">跳转到项目列表</a>
-<div class="noise" aria-hidden="true"></div>
-
-<!-- ════ Hero — left-aligned, no badge, no gradient text ════ -->
-<header class="hero">
-  <div class="hero-content">
-    <span class="hero-label">NAVIGATION</span>
-    <h1>我的<strong>项目</strong>导航</h1>
-    <p>一站式入口，快速访问所有业务工具与数据面板</p>
-    <div class="stats-row">
-      <div class="stat-item">
-        <div class="stat-num" id="totalCount">8</div>
-        <div class="stat-tag">项目总数</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-num" id="htmlCount">4</div>
-        <div class="stat-tag">静态页面</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-num" id="flaskCount">4</div>
-        <div class="stat-tag">Flask 应用</div>
-      </div>
-    </div>
+<header>
+  <div class="wrap">
+    <h1>项目导航</h1>
+    <span>共 8 个项目</span>
   </div>
 </header>
 
-<!-- ════ Project cards — 2-col zig-zag ════ -->
-<main class="container">
-  <div class="section-header">
-    <h2 class="section-title">全部项目</h2>
-    <span class="section-count" id="projectCount">共 8 个项目</span>
-  </div>
+<main>
   <div class="grid" id="grid"></div>
 </main>
 
-<footer class="footer">iTakatox &middot; 2026</footer>
+<footer>iTakatox &middot; 2026</footer>
 
 <script>
-// Each project uses its first Chinese character as badge icon (no emojis)
 const projects = [
-  { name: "厂检报告", char: "厂", bg: "#fef3c7", url: "https://changjian.onrender.com", domain: "changjian.onrender.com", type: "static" },
-  { name: "二维码",   char: "码", bg: "#e0f2fe", url: "https://erweima-g2e5.onrender.com", domain: "erweima-g2e5.onrender.com", type: "static" },
-  { name: "水量计算", char: "水", bg: "#dcfce7", url: "https://shuiliang.onrender.com", domain: "shuiliang.onrender.com", type: "static" },
-  { name: "数据分析", char: "数", bg: "#fce7f3", url: "https://fxgongju.onrender.com", domain: "fxgongju.onrender.com", type: "static" },
-  { name: "订单制作", char: "单", bg: "#e0e7ff", url: "https://dingdan.onrender.com", domain: "dingdan.onrender.com", type: "flask" },
-  { name: "工伤费率", char: "伤", bg: "#fef9c3", url: "https://gsfl.onrender.com", domain: "gsfl.onrender.com", type: "flask" },
-  { name: "对账管理", char: "账", bg: "#d1fae5", url: "https://zd-2h6z.onrender.com", domain: "zd-2h6z.onrender.com", type: "flask" },
-  { name: "销售单",   char: "售", bg: "#ffe4e6", url: "https://recon-system-cr7r.onrender.com", domain: "recon-system-cr7r.onrender.com", type: "flask" },
+  {
+    name: "厂检报告", domain: "changjian.onrender.com",
+    url: "https://changjian.onrender.com", type: "static",
+    color: "#1a73e8",
+    icon: '<rect x="5" y="3" width="16" height="20" rx="2" fill="none" stroke="white" stroke-width="1.8"/><line x1="9" y1="9" x2="17" y2="9" stroke="white" stroke-width="1.5" stroke-linecap="round"/><line x1="9" y1="13" x2="17" y2="13" stroke="white" stroke-width="1.5" stroke-linecap="round"/><line x1="9" y1="17" x2="13" y2="17" stroke="white" stroke-width="1.5" stroke-linecap="round"/>'
+  },
+  {
+    name: "二维码", domain: "erweima-g2e5.onrender.com",
+    url: "https://erweima-g2e5.onrender.com", type: "static",
+    color: "#ea4335",
+    icon: '<rect x="4" y="4" width="7" height="7" rx="1.2" fill="white"/><rect x="15" y="4" width="7" height="7" rx="1.2" fill="white"/><rect x="4" y="15" width="7" height="7" rx="1.2" fill="white"/><rect x="15" y="15" width="3" height="3" rx="0.8" fill="white"/><rect x="19" y="15" width="3" height="3" rx="0.8" fill="white"/><rect x="15" y="19" width="3" height="3" rx="0.8" fill="white"/>'
+  },
+  {
+    name: "水量计算", domain: "shuiliang.onrender.com",
+    url: "https://shuiliang.onrender.com", type: "static",
+    color: "#34a853",
+    icon: '<path d="M13 3C13 3 22 12 22 17C22 20.9 18.4 24 14 24C11.4 24 9.1 22.8 7.6 20.8C6.1 18.9 5.5 16.4 6 14" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round"/><path d="M13 3L13 12" stroke="white" stroke-width="1.8" stroke-linecap="round"/>'
+  },
+  {
+    name: "数据分析", domain: "fxgongju.onrender.com",
+    url: "https://fxgongju.onrender.com", type: "static",
+    color: "#f9ab00",
+    icon: '<rect x="5" y="15" width="4" height="8" rx="1" fill="white"/><rect x="11" y="10" width="4" height="13" rx="1" fill="white"/><rect x="17" y="6" width="4" height="17" rx="1" fill="white"/>'
+  },
+  {
+    name: "订单制作", domain: "dingdan.onrender.com",
+    url: "https://dingdan.onrender.com", type: "flask",
+    color: "#188038",
+    icon: '<path d="M6 3L6 21L20 21L20 7L15 3Z" fill="none" stroke="white" stroke-width="1.8" stroke-linejoin="round"/><path d="M14 3L14 8L19 8" fill="none" stroke="white" stroke-width="1.8" stroke-linejoin="round"/><line x1="9" y1="13" x2="17" y2="13" stroke="white" stroke-width="1.5" stroke-linecap="round"/><line x1="9" y1="17" x2="15" y2="17" stroke="white" stroke-width="1.5" stroke-linecap="round"/>'
+  },
+  {
+    name: "工伤费率", domain: "gsfl.onrender.com",
+    url: "https://gsfl.onrender.com", type: "flask",
+    color: "#c5221f",
+    icon: '<path d="M12 3L12 7M12 20L12 23" stroke="white" stroke-width="1.8" stroke-linecap="round"/><path d="M7 7L7 6C7 4.3 8.3 3 10 3L14 3C15.7 3 17 4.3 17 6L17 7C17 9.8 14.5 12 12 14C9.5 12 7 9.8 7 7Z" fill="none" stroke="white" stroke-width="1.8"/><line x1="12" y1="16" x2="12" y2="20" stroke="white" stroke-width="1.8" stroke-linecap="round"/>'
+  },
+  {
+    name: "对账管理", domain: "zd-2h6z.onrender.com",
+    url: "https://zd-2h6z.onrender.com", type: "flask",
+    color: "#1967d2",
+    icon: '<circle cx="13" cy="8" r="5" fill="none" stroke="white" stroke-width="1.8"/><path d="M5 22L10 16" stroke="white" stroke-width="1.8" stroke-linecap="round"/><line x1="8" y1="8" x2="18" y2="8" stroke="white" stroke-width="1.5" stroke-linecap="round"/><line x1="13" y1="3" x2="13" y2="13" stroke="white" stroke-width="1.5" stroke-linecap="round"/>'
+  },
+  {
+    name: "销售单", domain: "recon-system-cr7r.onrender.com",
+    url: "https://recon-system-cr7r.onrender.com", type: "flask",
+    color: "#7b1fa2",
+    icon: '<circle cx="11" cy="11" r="6" fill="none" stroke="white" stroke-width="1.8"/><line x1="15.5" y1="15.5" x2="21" y2="21" stroke="white" stroke-width="1.8" stroke-linecap="round"/><line x1="11" y1="8" x2="11" y2="14" stroke="white" stroke-width="1.5" stroke-linecap="round"/><line x1="8" y1="11" x2="14" y2="11" stroke="white" stroke-width="1.5" stroke-linecap="round"/>'
+  },
 ];
 
 const typeLabel = { static: "静态页", flask: "Flask" };
 const typeTagClass = { static: "tag-static", flask: "tag-flask" };
 
-document.getElementById('totalCount').textContent = projects.length;
-document.getElementById('htmlCount').textContent  = projects.filter(p => p.type === 'static').length;
-document.getElementById('flaskCount').textContent = projects.filter(p => p.type === 'flask').length;
-document.getElementById('projectCount').textContent = '共 ' + projects.length + ' 个项目';
-
 document.getElementById('grid').innerHTML = projects.map(p => `
   <a class="card" href="${p.url}" target="_blank" rel="noopener">
-    <div class="card-badge" style="background:${p.bg}" aria-hidden="true">${p.char}</div>
-    <div class="card-body">
-      <div class="card-name">${p.name}</div>
-      <div class="card-domain">${p.domain}</div>
-      <span class="tag ${typeTagClass[p.type]}">${typeLabel[p.type]}</span>
+    <div class="card-icon" style="background:${p.color}">
+      <svg viewBox="0 0 26 26" xmlns="http://www.w3.org/2000/svg">${p.icon}</svg>
     </div>
-    <span class="card-arrow" aria-hidden="true">&rarr;</span>
+    <div class="card-name">${p.name}</div>
+    <div class="card-domain">${p.domain}</div>
+    <span class="card-tag ${typeTagClass[p.type]}">${typeLabel[p.type]}</span>
   </a>
 `).join('');
 </script>
