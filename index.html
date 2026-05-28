@@ -2,216 +2,344 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>项目导航</title>
+<meta name="description" content="一站式项目导航，快速访问所有业务工具">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #f8f9fb;
-    --text: #1e1e2e;
-    --muted: #8b8fa3;
-    --accent: #5b5fe3;
-    --accent2: #8b5cf6;
+    --bg: #fafaf9;
+    --text: #1c1917;
+    --muted: #78716c;
+    --accent: #d97706;
+    --accent-light: #fef3c7;
+    --accent-glow: #fbbf24;
     --card: #ffffff;
-    --radius: 18px;
+    --card-border: #f0efed;
+    --radius: 16px;
+    --radius-sm: 10px;
+    --font-display: "Geist", "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-body: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
 
   body {
-    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Microsoft YaHei", "PingFang SC", sans-serif;
+    font-family: var(--font-body);
     background: var(--bg);
     color: var(--text);
-    min-height: 100vh;
+    min-height: 100dvh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* ── Noise overlay ── */
+  .noise {
+    position: fixed; inset: 0; z-index: 9999;
+    pointer-events: none; opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 256px 256px;
   }
 
   /* ── Hero ── */
   .hero {
-    background: linear-gradient(135deg, #1e1b4b 0%, #312e81 40%, #4338ca 100%);
-    padding: 56px 24px 64px;
-    text-align: center;
+    background: #0a0a12;
+    padding: 72px 32px 80px;
     position: relative;
     overflow: hidden;
+    isolation: isolate;
   }
   .hero::before {
     content: "";
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse at 20% 50%, rgba(139,92,246,0.25) 0%, transparent 60%),
-                radial-gradient(ellipse at 80% 20%, rgba(99,102,241,0.2) 0%, transparent 50%);
-    pointer-events: none;
+    position: absolute; inset: 0; z-index: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 15% 40%, rgba(217,119,6,0.12) 0%, transparent 55%),
+      radial-gradient(ellipse 60% 80% at 75% 60%, rgba(251,191,36,0.06) 0%, transparent 50%);
   }
-  .hero-content { position: relative; z-index: 1; }
+  .hero::after {
+    content: "";
+    position: absolute; inset: 0; z-index: 0; opacity: 0.25;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+  .hero-content {
+    position: relative; z-index: 1;
+    max-width: 960px; margin: 0 auto;
+  }
+  .hero-badge {
+    display: inline-block;
+    font-family: var(--font-display);
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    color: #fbbf24;
+    background: rgba(251,191,36,0.1);
+    padding: 5px 14px; border-radius: 100px;
+    margin-bottom: 24px;
+    border: 1px solid rgba(251,191,36,0.15);
+  }
   .hero h1 {
-    font-size: 38px; font-weight: 800; color: #ffffff;
-    letter-spacing: -1px; margin-bottom: 10px;
+    font-family: var(--font-display);
+    font-size: clamp(34px, 6vw, 56px);
+    font-weight: 800; color: #fafaf9;
+    letter-spacing: -1.5px; line-height: 1.08;
+    margin-bottom: 14px;
+    text-wrap: balance;
   }
-  .hero h1 span { background: linear-gradient(135deg, #c4b5fd, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-  .hero p { font-size: 15px; color: #a5b4fc; opacity: 0.85; }
+  .hero h1 em {
+    font-style: normal;
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero p {
+    font-size: 16px; color: #a8a29e;
+    max-width: 480px; line-height: 1.5;
+  }
 
+  /* ── Stats ── */
   .stats-row {
-    display: flex; justify-content: center; gap: 32px;
-    margin-top: 32px; position: relative; z-index: 1;
+    display: flex; gap: 40px;
+    margin-top: 44px;
+    position: relative; z-index: 1;
   }
-  .stat-item { text-align: center; }
+  .stat-item {
+    display: flex; flex-direction: column;
+  }
   .stat-num {
-    font-size: 40px; font-weight: 800; color: #ffffff;
-    line-height: 1;
+    font-family: var(--font-display);
+    font-size: clamp(36px, 5vw, 48px);
+    font-weight: 800; color: #ffffff;
+    line-height: 1; font-variant-numeric: tabular-nums;
   }
-  .stat-tag { font-size: 12px; color: #a5b4fc; margin-top: 4px; letter-spacing: 1px; }
+  .stat-tag {
+    font-size: 12px; color: #78716c;
+    margin-top: 4px; letter-spacing: 0.5px;
+    font-weight: 500;
+  }
 
-  /* ── Grid ── */
-  .container { max-width: 1024px; margin: 0 auto; padding: 40px 24px 60px; }
-
+  /* ── Container ── */
+  .container {
+    max-width: 1120px; margin: 0 auto;
+    padding: 48px 28px 64px;
+  }
+  .section-header {
+    display: flex; align-items: baseline; justify-content: space-between;
+    margin-bottom: 28px;
+    flex-wrap: wrap; gap: 8px;
+  }
   .section-title {
+    font-family: var(--font-display);
     font-size: 13px; font-weight: 700; color: var(--muted);
     text-transform: uppercase; letter-spacing: 2px;
-    margin-bottom: 20px;
+  }
+  .section-count {
+    font-size: 12px; color: #a8a29e;
   }
 
+  /* ── Grid ── */
   .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-    gap: 18px;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
   }
 
   .card {
     background: var(--card);
     border-radius: var(--radius);
-    padding: 28px 26px 24px;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.04);
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1.2);
-    text-decoration: none; color: inherit; display: flex;
-    flex-direction: column; gap: 10px;
-    border: 1px solid #f1f1f4;
+    padding: 24px 22px 22px;
+    text-decoration: none; color: inherit;
+    display: flex; flex-direction: column; gap: 12px;
+    border: 1px solid var(--card-border);
     position: relative; overflow: hidden;
+    transition:
+      transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+      box-shadow 0.35s ease,
+      border-color 0.35s ease;
+    box-shadow: 0 1px 2px rgba(28,25,23,0.04), 0 4px 16px rgba(28,25,23,0.03);
+    opacity: 0; transform: translateY(24px);
+    animation: cardIn 0.55s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
   }
-  .card::after {
+  @keyframes cardIn {
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .card:nth-child(1) { animation-delay: 0.05s; }
+  .card:nth-child(2) { animation-delay: 0.10s; }
+  .card:nth-child(3) { animation-delay: 0.15s; }
+  .card:nth-child(4) { animation-delay: 0.20s; }
+  .card:nth-child(5) { animation-delay: 0.25s; }
+  .card:nth-child(6) { animation-delay: 0.30s; }
+  .card:nth-child(7) { animation-delay: 0.35s; }
+  .card:nth-child(8) { animation-delay: 0.40s; }
+
+  .card::before {
     content: "";
-    position: absolute; top: 0; left: 0; right: 0; height: 3px;
-    background: linear-gradient(90deg, var(--accent), var(--accent2));
-    transform: scaleX(0); transform-origin: left;
-    transition: transform 0.3s ease;
+    position: absolute; left: 0; top: 12px; bottom: 12px;
+    width: 3px; border-radius: 0 3px 3px 0;
+    background: var(--accent);
+    transform: scaleY(0);
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
-  .card:hover { transform: translateY(-4px); box-shadow: 0 12px 36px rgba(0,0,0,0.08); border-color: #e4e4ec; }
-  .card:hover::after { transform: scaleX(1); }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 2px 4px rgba(217,119,6,0.04), 0 12px 32px rgba(217,119,6,0.08); border-color: #f5d8a4; }
+  .card:hover::before { transform: scaleY(1); }
+  .card:active { transform: scale(0.985); transition: transform 0.1s ease; }
 
   .card-top { display: flex; align-items: flex-start; justify-content: space-between; }
   .card-icon {
-    width: 48px; height: 48px; border-radius: 14px;
+    width: 46px; height: 46px; border-radius: var(--radius-sm);
     display: flex; align-items: center; justify-content: center;
-    font-size: 24px;
+    font-size: 22px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
   }
   .card-arrow {
-    font-size: 14px; color: #c0c0d0;
-    transition: all 0.3s;
+    font-family: var(--font-display);
+    font-size: 15px; color: #d6d3d1;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    margin-top: 4px;
   }
-  .card:hover .card-arrow { color: var(--accent); transform: translateX(3px); }
+  .card:hover .card-arrow { color: var(--accent); transform: translate(2px, -2px); }
 
   .card-info { flex: 1; }
-  .card-name { font-size: 17px; font-weight: 700; color: var(--text); letter-spacing: -0.3px; }
-  .card-domain { font-size: 12px; color: #b0b4c0; margin-top: 2px; }
-
-  .card-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
-  .tag {
-    font-size: 10px; font-weight: 600; letter-spacing: 0.5px;
-    padding: 3px 10px; border-radius: 100px;
+  .card-name {
+    font-family: var(--font-display);
+    font-size: 16px; font-weight: 700; color: var(--text);
+    letter-spacing: -0.2px; margin-bottom: 2px;
   }
-  .tag-html { background: #fef3c7; color: #b45309; }
-  .tag-flask { background: #e0e7ff; color: #4338ca; }
-  .tag-render { background: #d1fae5; color: #065f46; }
+  .card-domain { font-size: 12px; color: #a8a29e; }
+
+  .card-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+  .tag {
+    font-family: var(--font-display);
+    font-size: 10px; font-weight: 600; letter-spacing: 0.4px;
+    padding: 3px 10px; border-radius: 6px;
+  }
+  .tag-static { background: #fef3c7; color: #92400e; }
+  .tag-flask  { background: #e0e7ff; color: #3730a3; }
 
   /* ── Footer ── */
   .footer {
-    text-align: center; padding: 20px 24px 40px;
-    font-size: 12px; color: #c0c4d0; letter-spacing: 0.5px;
+    text-align: center; padding: 16px 24px 40px;
+    font-size: 12px; color: #d6d3d1; letter-spacing: 0.3px;
+    font-family: var(--font-display);
   }
 
+  /* ── Skip link ── */
+  .skip-link {
+    position: fixed; top: 12px; left: 12px; z-index: 10000;
+    background: var(--accent); color: #fff;
+    padding: 8px 16px; border-radius: 8px;
+    font-size: 13px; font-weight: 600;
+    transform: translateY(-120%);
+    transition: transform 0.2s ease;
+  }
+  .skip-link:focus { transform: translateY(0); }
+
+  /* ── Mobile ── */
   @media (max-width: 768px) {
-    .hero { padding: 48px 20px 52px; }
-    .hero h1 { font-size: 28px; }
-    .hero p { font-size: 13px; }
-    .stats-row { gap: 24px; margin-top: 24px; }
-    .stat-num { font-size: 32px; }
-    .stat-tag { font-size: 11px; }
+    .hero {
+      padding: 56px 20px 60px;
+    }
+    .hero-badge { font-size: 10px; padding: 4px 12px; margin-bottom: 18px; }
+    .hero h1 { font-size: 32px; letter-spacing: -1px; }
+    .hero p { font-size: 14px; }
+    .stats-row { gap: 28px; margin-top: 32px; }
+    .stat-num { font-size: 34px; }
 
-    .container { padding: 24px 16px 40px; }
-    .section-title { font-size: 11px; margin-bottom: 14px; }
+    .container { padding: 28px 14px 48px; }
+    .section-header { margin-bottom: 18px; }
+    .section-title { font-size: 11px; }
 
-    .grid { grid-template-columns: 1fr; gap: 12px; }
+    .grid { grid-template-columns: 1fr; gap: 10px; }
 
     .card {
-      padding: 20px 18px;
-      gap: 8px;
+      padding: 18px 16px; gap: 10px;
+      animation: none; opacity: 1; transform: none;
       -webkit-tap-highlight-color: transparent;
     }
-    .card:active {
-      transform: scale(0.98);
-      background: #f8f8fc;
-    }
-    .card-icon { width: 42px; height: 42px; border-radius: 12px; font-size: 21px; }
+    .card-icon { width: 40px; height: 40px; border-radius: 10px; font-size: 19px; }
     .card-name { font-size: 15px; }
     .card-domain { font-size: 11px; }
-    .card-arrow { font-size: 16px; }
+    .card-arrow { font-size: 17px; }
 
-    .footer { padding: 12px 16px 32px; font-size: 11px; }
+    .footer { padding: 8px 14px 32px; font-size: 11px; }
   }
 
   @media (max-width: 380px) {
-    .hero { padding: 36px 14px 40px; }
-    .hero h1 { font-size: 24px; }
-    .stats-row { gap: 16px; }
-    .stat-num { font-size: 26px; }
+    .hero { padding: 40px 14px 44px; }
+    .hero h1 { font-size: 26px; }
+    .hero p { font-size: 13px; }
+    .stats-row { gap: 20px; }
+    .stat-num { font-size: 28px; }
     .stat-tag { font-size: 10px; }
   }
 </style>
 </head>
 <body>
 
-<div class="hero">
+<a href="#grid" class="skip-link">跳转到项目列表</a>
+<div class="noise" aria-hidden="true"></div>
+
+<!-- ════ Hero ════ -->
+<header class="hero">
   <div class="hero-content">
-    <h1>我的<span>项目</span>导航</h1>
-    <p>一站式入口，快速访问所有业务工具</p>
+    <div class="hero-badge">Project Hub</div>
+    <h1>我的<em>项目</em>导航</h1>
+    <p>一站式入口，快速访问所有业务工具与数据面板</p>
+    <div class="stats-row">
+      <div class="stat-item">
+        <div class="stat-num" id="totalCount">8</div>
+        <div class="stat-tag">项目总数</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" id="htmlCount">4</div>
+        <div class="stat-tag">静态页面</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" id="flaskCount">4</div>
+        <div class="stat-tag">Flask 应用</div>
+      </div>
+    </div>
   </div>
-  <div class="stats-row">
-    <div class="stat-item"><div class="stat-num" id="totalCount">8</div><div class="stat-tag">项目总数</div></div>
-    <div class="stat-item"><div class="stat-num" id="htmlCount">4</div><div class="stat-tag">静态页面</div></div>
-    <div class="stat-item"><div class="stat-num" id="flaskCount">4</div><div class="stat-tag">Flask 应用</div></div>
-  </div>
-</div>
+</header>
 
-<div class="container">
-  <div class="section-title">全部项目</div>
+<!-- ════ Projects ════ -->
+<main class="container">
+  <div class="section-header">
+    <h2 class="section-title">全部项目</h2>
+    <span class="section-count" id="projectCount">共 8 个项目</span>
+  </div>
   <div class="grid" id="grid"></div>
-</div>
+</main>
 
-<div class="footer">iTakatox · 2026</div>
+<footer class="footer">iTakatox &copy; 2026</footer>
 
 <script>
 const projects = [
-  { name: "厂检报告", icon: "📋", color: "#fef3c7", url: "https://changjian.onrender.com", domain: "changjian.onrender.com", type: "html" },
-  { name: "二维码",   icon: "📱", color: "#e0f2fe", url: "https://erweima-g2e5.onrender.com", domain: "erweima-g2e5.onrender.com", type: "html" },
-  { name: "水量计算", icon: "💧", color: "#dcfce7", url: "https://shuiliang.onrender.com", domain: "shuiliang.onrender.com", type: "html" },
-  { name: "数据分析", icon: "📊", color: "#fce7f3", url: "https://fxgongju.onrender.com", domain: "fxgongju.onrender.com", type: "html" },
+  { name: "厂检报告", icon: "📋", color: "#fef3c7", url: "https://changjian.onrender.com", domain: "changjian.onrender.com", type: "static" },
+  { name: "二维码",   icon: "📱", color: "#e0f2fe", url: "https://erweima-g2e5.onrender.com", domain: "erweima-g2e5.onrender.com", type: "static" },
+  { name: "水量计算", icon: "💧", color: "#dcfce7", url: "https://shuiliang.onrender.com", domain: "shuiliang.onrender.com", type: "static" },
+  { name: "数据分析", icon: "📊", color: "#fce7f3", url: "https://fxgongju.onrender.com", domain: "fxgongju.onrender.com", type: "static" },
   { name: "订单制作", icon: "📦", color: "#e0e7ff", url: "https://dingdan.onrender.com", domain: "dingdan.onrender.com", type: "flask" },
   { name: "工伤费率", icon: "🏥", color: "#fef9c3", url: "https://gsfl.onrender.com", domain: "gsfl.onrender.com", type: "flask" },
   { name: "对账管理", icon: "💰", color: "#d1fae5", url: "https://zd-2h6z.onrender.com", domain: "zd-2h6z.onrender.com", type: "flask" },
   { name: "销售单",   icon: "🔍", color: "#ffe4e6", url: "https://recon-system-cr7r.onrender.com", domain: "recon-system-cr7r.onrender.com", type: "flask" },
 ];
 
-const typeLabel = { html: "静态页", flask: "Flask" };
-const typeTag  = { html: "tag-html", flask: "tag-flask" };
+const typeLabel = { static: "静态页", flask: "Flask" };
+const typeTag  = { static: "tag-static", flask: "tag-flask" };
 
-document.getElementById('totalCount').textContent = projects.length;
-document.getElementById('htmlCount').textContent = projects.filter(p => p.type === 'html').length;
-document.getElementById('flaskCount').textContent = projects.filter(p => p.type === 'flask').length;
+document.getElementById('totalCount').textContent  = projects.length;
+document.getElementById('htmlCount').textContent   = projects.filter(p => p.type === 'static').length;
+document.getElementById('flaskCount').textContent  = projects.filter(p => p.type === 'flask').length;
+document.getElementById('projectCount').textContent = '共 ' + projects.length + ' 个项目';
 
 document.getElementById('grid').innerHTML = projects.map(p => `
-  <a class="card" href="${p.url}" target="_blank">
+  <a class="card" href="${p.url}" target="_blank" rel="noopener">
     <div class="card-top">
       <div class="card-icon" style="background:${p.color}">${p.icon}</div>
-      <span class="card-arrow">↗</span>
+      <span class="card-arrow" aria-hidden="true">↗</span>
     </div>
     <div class="card-info">
       <div class="card-name">${p.name}</div>
