@@ -128,12 +128,42 @@
     font-size: 12px; color: #c0c4d0; letter-spacing: 0.5px;
   }
 
-  @media (max-width: 640px) {
-    .hero { padding: 40px 20px 48px; }
+  @media (max-width: 768px) {
+    .hero { padding: 48px 20px 52px; }
     .hero h1 { font-size: 28px; }
-    .stats-row { gap: 20px; }
-    .stat-num { font-size: 30px; }
-    .grid { grid-template-columns: 1fr; }
+    .hero p { font-size: 13px; }
+    .stats-row { gap: 24px; margin-top: 24px; }
+    .stat-num { font-size: 32px; }
+    .stat-tag { font-size: 11px; }
+
+    .container { padding: 24px 16px 40px; }
+    .section-title { font-size: 11px; margin-bottom: 14px; }
+
+    .grid { grid-template-columns: 1fr; gap: 12px; }
+
+    .card {
+      padding: 20px 18px;
+      gap: 8px;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .card:active {
+      transform: scale(0.98);
+      background: #f8f8fc;
+    }
+    .card-icon { width: 42px; height: 42px; border-radius: 12px; font-size: 21px; }
+    .card-name { font-size: 15px; }
+    .card-domain { font-size: 11px; }
+    .card-arrow { font-size: 16px; }
+
+    .footer { padding: 12px 16px 32px; font-size: 11px; }
+  }
+
+  @media (max-width: 380px) {
+    .hero { padding: 36px 14px 40px; }
+    .hero h1 { font-size: 24px; }
+    .stats-row { gap: 16px; }
+    .stat-num { font-size: 26px; }
+    .stat-tag { font-size: 10px; }
   }
 </style>
 </head>
