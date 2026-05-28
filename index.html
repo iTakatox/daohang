@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>项目导航</title>
+<style>
+  :root {
+    --bg: #f0f2f5;
+    --card: #ffffff;
+    --text: #1a1a2e;
+    --muted: #6b7280;
+    --accent: #4f46e5;
+    --radius: 14px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Microsoft YaHei", "PingFang SC", sans-serif;
+    background: var(--bg);
+    min-height: 100vh;
+    padding: 40px 24px;
+  }
+  .container { max-width: 900px; margin: 0 auto; }
+  h1 {
+    font-size: 26px; font-weight: 700; color: var(--text);
+    margin-bottom: 6px; letter-spacing: -0.5px;
+  }
+  .subtitle { font-size: 13px; color: var(--muted); margin-bottom: 32px; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 14px;
+  }
+
+  .card {
+    background: var(--card); border-radius: var(--radius);
+    padding: 22px 24px; box-shadow: var(--shadow);
+    transition: all 0.2s; cursor: pointer;
+    text-decoration: none; color: inherit; display: block;
+    border: 1px solid transparent;
+  }
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(0,0,0,0.08);
+    border-color: #c7d2fe;
+  }
+
+  .card-icon { font-size: 28px; margin-bottom: 10px; }
+  .card-name { font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .card-url { font-size: 11px; color: #9ca3af; word-break: break-all; }
+
+  @media (max-width: 600px) {
+    body { padding: 20px 12px; }
+    .grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>项目导航</h1>
+  <p class="subtitle" id="count">共 8 个项目</p>
+
+  <div class="grid" id="grid"></div>
+</div>
+
+<script>
+const projects = [
+  { name: "厂检报告", icon: "📋", url: "https://changjian.onrender.com" },
+  { name: "二维码",   icon: "📱", url: "https://erweima-g2e5.onrender.com" },
+  { name: "水量计算", icon: "💧", url: "https://shuiliang.onrender.com" },
+  { name: "数据分析", icon: "📊", url: "https://fxgongju.onrender.com" },
+  { name: "订单制作", icon: "📦", url: "https://dingdan.onrender.com" },
+  { name: "工伤费率", icon: "🏥", url: "https://gsfl.onrender.com" },
+  { name: "对账管理", icon: "💰", url: "https://zd-2h6z.onrender.com" },
+  { name: "销售单",   icon: "🔍", url: "https://recon-system-cr7r.onrender.com" },
+];
+
+document.getElementById('count').textContent = `共 ${projects.length} 个项目`;
+document.getElementById('grid').innerHTML = projects.map(p => `
+  <a class="card" href="${p.url}" target="_blank">
+    <div class="card-icon">${p.icon}</div>
+    <div class="card-name">${p.name}</div>
+    <div class="card-url">${p.url}</div>
+  </a>
+`).join('');
+</script>
+</body>
+</html>
