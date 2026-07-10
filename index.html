@@ -115,7 +115,7 @@
 <header>
   <div class="wrap">
     <h1>项目导航</h1>
-    <span>共 8 个项目</span>
+    <span id="project-count">项目加载中</span>
   </div>
 </header>
 
@@ -152,6 +152,12 @@ const projects = [
     icon: '<rect x="5" y="15" width="4" height="8" rx="1" fill="white"/><rect x="11" y="10" width="4" height="13" rx="1" fill="white"/><rect x="17" y="6" width="4" height="17" rx="1" fill="white"/>'
   },
   {
+    name: "水电气费用分析", domain: "sdqf.onrender.com",
+    url: "https://sdqf.onrender.com/", type: "static",
+    color: "#087f73",
+    icon: '<rect x="4" y="15" width="4" height="8" rx="1" fill="white"/><rect x="10" y="11" width="4" height="12" rx="1" fill="white"/><rect x="16" y="7" width="4" height="16" rx="1" fill="white"/><path d="M4 10L9 7L14 9L21 3" fill="none" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>'
+  },
+  {
     name: "订单制作", domain: "dingdan.onrender.com",
     url: "https://dingdan.onrender.com", type: "flask",
     color: "#188038",
@@ -186,6 +192,7 @@ const projects = [
 const typeLabel = { static: "静态页", flask: "Flask" };
 const typeTagClass = { static: "tag-static", flask: "tag-flask" };
 
+document.getElementById('project-count').textContent = `共 ${projects.length} 个项目`;
 document.getElementById('grid').innerHTML = projects.map(p => `
   <a class="card" href="${p.url}" target="_blank" rel="noopener">
     <div class="card-icon" style="background:${p.color}">
