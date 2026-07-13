@@ -88,6 +88,7 @@
   }
   .tag-static { background: #e8f0fe; color: #1967d2; }
   .tag-flask  { background: #fce8e6; color: #c5221f; }
+  .tag-node   { background: #e6f4ea; color: #137333; }
 
   /* ── Footer ── */
   footer {
@@ -158,6 +159,12 @@ const projects = [
     icon: '<rect x="4" y="15" width="4" height="8" rx="1" fill="white"/><rect x="10" y="11" width="4" height="12" rx="1" fill="white"/><rect x="16" y="7" width="4" height="16" rx="1" fill="white"/><path d="M4 10L9 7L14 9L21 3" fill="none" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>'
   },
   {
+    name: "渝津合生产 ERP", domain: "slerpzx.onrender.com",
+    url: "https://slerpzx.onrender.com", type: "node",
+    color: "#087a4c",
+    icon: '<path d="M5 4H21V22H5Z" fill="none" stroke="white" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 4V9H17V4M9 14H17M9 18H15" fill="none" stroke="white" stroke-width="1.6" stroke-linecap="round"/>'
+  },
+  {
     name: "订单制作", domain: "dingdan.onrender.com",
     url: "https://dingdan.onrender.com", type: "flask",
     color: "#188038",
@@ -189,8 +196,8 @@ const projects = [
   },
 ];
 
-const typeLabel = { static: "静态页", flask: "Flask" };
-const typeTagClass = { static: "tag-static", flask: "tag-flask" };
+const typeLabel = { static: "静态页", flask: "Flask", node: "Node" };
+const typeTagClass = { static: "tag-static", flask: "tag-flask", node: "tag-node" };
 
 document.getElementById('project-count').textContent = `共 ${projects.length} 个项目`;
 document.getElementById('grid').innerHTML = projects.map(p => `
