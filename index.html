@@ -3,213 +3,511 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#10231d">
 <title>项目导航</title>
-<meta name="description" content="一站式项目导航，快速访问所有业务工具">
+<meta name="description" content="一站式项目导航，集中访问常用业务工具与保留的旧版入口。">
 <style>
-  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --ink: #17231f;
+    --muted: #69736f;
+    --line: #dfe5e2;
+    --paper: #f4f6f2;
+    --card: rgba(255, 255, 255, 0.92);
+    --green: #17694c;
+    --green-dark: #0f3f30;
+    --lime: #b9dc75;
+    --legacy: #8a6b36;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  * { margin: 0; padding: 0; }
 
   body {
-    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Segoe UI", sans-serif;
-    background: #f8f9fa;
-    color: #202124;
     min-height: 100vh;
+    color: var(--ink);
+    background:
+      radial-gradient(circle at 8% 0%, rgba(185, 220, 117, 0.18), transparent 30rem),
+      linear-gradient(180deg, #eef2ec 0, var(--paper) 24rem);
+    font-family: "PingFang SC", "Microsoft YaHei", Inter, system-ui, -apple-system, sans-serif;
     -webkit-font-smoothing: antialiased;
   }
 
-  /* ── Header ── */
-  header {
-    background: #fff;
-    border-bottom: 1px solid #e8eaed;
-    padding: 20px 24px;
-  }
-  header .wrap {
-    max-width: 1200px; margin: 0 auto;
-    display: flex; align-items: baseline; gap: 12px;
-    flex-wrap: wrap;
-  }
-  header h1 {
-    font-size: 22px; font-weight: 600;
-    color: #202124; letter-spacing: -0.3px;
-  }
-  header span {
-    font-size: 13px; color: #5f6368;
+  a { color: inherit; }
+
+  .hero {
+    position: relative;
+    overflow: hidden;
+    color: #fff;
+    background:
+      linear-gradient(110deg, rgba(9, 41, 31, 0.98), rgba(20, 91, 66, 0.94)),
+      #103f30;
   }
 
-  /* ── Main grid ── */
-  main {
-    max-width: 1200px; margin: 0 auto;
-    padding: 28px 24px 48px;
+  .hero::before,
+  .hero::after {
+    content: "";
+    position: absolute;
+    border-radius: 999px;
+    pointer-events: none;
   }
+
+  .hero::before {
+    width: 28rem;
+    height: 28rem;
+    right: -8rem;
+    top: -17rem;
+    border: 1px solid rgba(255, 255, 255, 0.13);
+    box-shadow: 0 0 0 4rem rgba(255, 255, 255, 0.025), 0 0 0 8rem rgba(255, 255, 255, 0.018);
+  }
+
+  .hero::after {
+    width: 11rem;
+    height: 11rem;
+    left: 7%;
+    bottom: -8rem;
+    background: rgba(185, 220, 117, 0.12);
+    filter: blur(1px);
+  }
+
+  .hero-inner,
+  main,
+  footer {
+    width: min(1180px, calc(100% - 40px));
+    margin-inline: auto;
+  }
+
+  .hero-inner {
+    position: relative;
+    z-index: 1;
+    min-height: 264px;
+    padding: 54px 0 46px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 40px;
+    align-items: end;
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 18px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    color: #d6e9b0;
+  }
+
+  .eyebrow::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--lime);
+    box-shadow: 0 0 0 5px rgba(185, 220, 117, 0.12);
+  }
+
+  h1 {
+    font-size: clamp(36px, 6vw, 58px);
+    line-height: 1.04;
+    letter-spacing: -0.045em;
+    font-weight: 760;
+  }
+
+  .hero-copy {
+    max-width: 640px;
+    margin-top: 17px;
+    font-size: 15px;
+    line-height: 1.75;
+    color: rgba(255, 255, 255, 0.72);
+  }
+
+  .summary {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(96px, 1fr));
+    gap: 10px;
+  }
+
+  .summary-item {
+    min-width: 110px;
+    padding: 17px 18px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.07);
+    backdrop-filter: blur(12px);
+  }
+
+  .summary-value {
+    display: block;
+    font-size: 24px;
+    font-weight: 750;
+    line-height: 1;
+    color: #fff;
+  }
+
+  .summary-label {
+    display: block;
+    margin-top: 8px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  main { padding: 44px 0 64px; }
+
+  .section + .section { margin-top: 52px; }
+
+  .section-head {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 18px;
+  }
+
+  .section-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section h2 {
+    font-size: 20px;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+
+  .section-note {
+    max-width: 560px;
+    font-size: 13px;
+    line-height: 1.6;
+    text-align: right;
+    color: var(--muted);
+  }
+
+  .section-badge,
+  .card-badge,
+  .card-type {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    white-space: nowrap;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  .section-badge {
+    padding: 5px 10px;
+    color: var(--green);
+    background: #e4efe8;
+  }
+
+  .section-badge.legacy {
+    color: var(--legacy);
+    background: #f1eadc;
+  }
+
   .grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 16px;
   }
 
-  /* ── Card ── */
   .card {
-    background: #fff;
-    border-radius: 16px;
-    padding: 24px;
-    text-decoration: none; color: inherit;
-    display: block;
-    border: 1px solid #e8eaed;
-    transition: box-shadow 0.2s ease, transform 0.2s ease;
+    position: relative;
+    min-height: 214px;
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    background: var(--card);
+    box-shadow: 0 10px 30px rgba(26, 48, 40, 0.035);
+    transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
     -webkit-tap-highlight-color: transparent;
   }
+
   .card:hover {
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 6px 20px rgba(0,0,0,0.06);
-    transform: translateY(-2px);
+    transform: translateY(-4px);
+    border-color: color-mix(in srgb, var(--accent) 46%, var(--line));
+    box-shadow: 0 18px 38px rgba(26, 48, 40, 0.1);
   }
-  .card:active { transform: scale(0.99); }
 
-  /* ── Icon ── */
+  .card:focus-visible {
+    outline: 3px solid rgba(23, 105, 76, 0.26);
+    outline-offset: 3px;
+  }
+
+  .card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 14px;
+  }
+
   .card-icon {
-    width: 48px; height: 48px; border-radius: 12px;
-    display: flex; align-items: center; justify-content: center;
-    margin-bottom: 16px;
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+    display: grid;
+    place-items: center;
+    color: #fff;
+    background: var(--accent);
+    box-shadow: 0 10px 20px color-mix(in srgb, var(--accent) 24%, transparent);
   }
-  .card-icon svg { width: 26px; height: 26px; }
 
-  /* ── Text ── */
+  .card-icon svg { width: 24px; height: 24px; }
+
+  .card-badge {
+    padding: 5px 9px;
+    color: var(--green);
+    background: #e8f2eb;
+  }
+
+  .card-badge.legacy {
+    color: var(--legacy);
+    background: #f4eee2;
+  }
+
   .card-name {
-    font-size: 15px; font-weight: 600; color: #202124;
-    margin-bottom: 2px; letter-spacing: -0.1px;
+    margin-top: 23px;
+    font-size: 17px;
+    line-height: 1.35;
+    font-weight: 720;
+    letter-spacing: -0.015em;
   }
-  .card-domain {
-    font-size: 12px; color: #5f6368; margin-bottom: 10px;
-    word-break: break-all;
-  }
-  .card-tag {
-    display: inline-block;
-    font-size: 11px; font-weight: 500;
-    padding: 2px 10px; border-radius: 4px;
-    letter-spacing: 0.2px;
-  }
-  .tag-static { background: #e8f0fe; color: #1967d2; }
-  .tag-flask  { background: #fce8e6; color: #c5221f; }
-  .tag-node   { background: #e6f4ea; color: #137333; }
 
-  /* ── Footer ── */
+  .card-desc {
+    margin-top: 7px;
+    min-height: 42px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+
+  .card-foot {
+    margin-top: auto;
+    padding-top: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .card-domain {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 11px;
+    color: #87908c;
+  }
+
+  .card-type {
+    flex: 0 0 auto;
+    padding: 4px 8px;
+    color: color-mix(in srgb, var(--accent) 82%, #10231d);
+    background: color-mix(in srgb, var(--accent) 11%, #fff);
+  }
+
+  .legacy-grid .card {
+    min-height: 196px;
+    background: rgba(255, 255, 255, 0.67);
+    box-shadow: none;
+  }
+
+  .legacy-grid .card-name { margin-top: 20px; font-size: 15px; }
+  .legacy-grid .card-desc { min-height: auto; }
+
   footer {
-    text-align: center; padding: 12px 24px 32px;
-    font-size: 12px; color: #9aa0a6;
+    padding: 0 0 34px;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    color: #8a938f;
+    font-size: 12px;
   }
 
   @media (max-width: 900px) {
-    .grid { grid-template-columns: repeat(2, 1fr); }
+    .hero-inner { grid-template-columns: 1fr; gap: 28px; }
+    .summary { max-width: 320px; }
+    .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .section-head { align-items: flex-start; }
   }
-  @media (max-width: 560px) {
-    header { padding: 16px; }
-    header h1 { font-size: 19px; }
-    main { padding: 16px 12px 36px; }
-    .grid { grid-template-columns: 1fr; gap: 10px; }
-    .card { padding: 18px; border-radius: 14px; }
-    .card-icon { width: 42px; height: 42px; border-radius: 10px; margin-bottom: 12px; }
-    .card-icon svg { width: 22px; height: 22px; }
-    .card-name { font-size: 14px; }
+
+  @media (max-width: 620px) {
+    .hero-inner, main, footer { width: min(100% - 28px, 1180px); }
+    .hero-inner { min-height: auto; padding: 40px 0 34px; }
+    h1 { font-size: 38px; }
+    .hero-copy { font-size: 14px; }
+    main { padding-top: 32px; }
+    .section + .section { margin-top: 42px; }
+    .section-head { display: block; }
+    .section-note { margin-top: 10px; text-align: left; }
+    .grid { grid-template-columns: 1fr; gap: 12px; }
+    .card, .legacy-grid .card { min-height: 0; }
+    .card-desc { min-height: auto; }
+    footer { display: block; line-height: 1.8; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card { transition: none; }
   }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="wrap">
-    <h1>项目导航</h1>
-    <span id="project-count">项目加载中</span>
+<header class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="eyebrow">FU NENG · DIGITAL TOOLS</div>
+      <h1>项目导航</h1>
+      <p class="hero-copy">集中访问当前使用的业务工具；历史项目继续保留，方便需要时回到旧版。</p>
+    </div>
+    <div class="summary" aria-label="项目统计">
+      <div class="summary-item">
+        <span class="summary-value" id="current-count">0</span>
+        <span class="summary-label">当前项目</span>
+      </div>
+      <div class="summary-item">
+        <span class="summary-value" id="legacy-count">0</span>
+        <span class="summary-label">旧版保留</span>
+      </div>
+    </div>
   </div>
 </header>
 
 <main>
-  <div class="grid" id="grid"></div>
+  <section class="section" aria-labelledby="current-title">
+    <div class="section-head">
+      <div class="section-title-wrap">
+        <h2 id="current-title">当前项目</h2>
+        <span class="section-badge">新版 / 新增</span>
+      </div>
+      <p class="section-note">已按 Render 当前服务整理，仅展示可直接使用的公共工具。</p>
+    </div>
+    <div class="grid" id="current-grid"></div>
+  </section>
+
+  <section class="section" aria-labelledby="legacy-title">
+    <div class="section-head">
+      <div class="section-title-wrap">
+        <h2 id="legacy-title">旧版入口</h2>
+        <span class="section-badge legacy">旧版保留</span>
+      </div>
+      <p class="section-note">以下为原首页项目，入口继续保留；使用时请留意“旧版”标识。</p>
+    </div>
+    <div class="grid legacy-grid" id="legacy-grid"></div>
+  </section>
 </main>
 
-<footer>iTakatox &middot; 2026</footer>
+<footer>
+  <span>iTakatox · 2026</span>
+  <span id="total-count">项目入口加载中</span>
+</footer>
 
 <script>
-const projects = [
+const icons = {
+  workspace: '<path d="M4 6.5h18v13H4z" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 10h4v5H8zM15 10h3M15 14h3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>',
+  chart: '<path d="M5 21V11M11 21V5M17 21v-8M23 21H3" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>',
+  people: '<circle cx="10" cy="8" r="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M4 20c.5-4 2.5-6 6-6s5.5 2 6 6M17 7.5a3 3 0 0 1 0 5.5M18 15c2 .5 3.3 2.2 3.7 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>',
+  energy: '<path d="M14.5 3 7 14h6l-1.5 9L20 11h-6z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>',
+  calendar: '<rect x="4" y="5" width="18" height="17" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 3v5M18 3v5M4 10h18M9 14h6M9 18h4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>',
+  document: '<path d="M6 3h9l5 5v15H6z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M15 3v6h5M10 14h6M10 18h5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>',
+  qr: '<path d="M4 4h7v7H4zM15 4h7v7h-7zM4 15h7v7H4zM15 15h3v3h-3zM19 15h3v3h-3zM15 19h3v3h-3zM20 20h2v2h-2z" fill="currentColor"/>',
+  water: '<path d="M13 3s7 8 7 13a7 7 0 0 1-14 0c0-5 7-13 7-13Z" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M9.5 17.5c.7 1.4 1.8 2.1 3.5 2.1" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>',
+  database: '<ellipse cx="13" cy="6" rx="8" ry="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M5 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6M5 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6" fill="none" stroke="currentColor" stroke-width="1.8"/>',
+  calculator: '<rect x="5" y="3" width="16" height="20" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M9 7h8M9 12h1M13 12h1M17 12h1M9 16h1M13 16h1M17 16h1M9 20h5M17 20h1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>',
+  search: '<circle cx="11" cy="11" r="6" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m15.5 15.5 5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>'
+};
+
+const currentProjects = [
   {
-    name: "厂检报告", domain: "changjian.onrender.com",
-    url: "https://changjian.onrender.com", type: "static",
-    color: "#1a73e8",
-    icon: '<rect x="5" y="3" width="16" height="20" rx="2" fill="none" stroke="white" stroke-width="1.8"/><line x1="9" y1="9" x2="17" y2="9" stroke="white" stroke-width="1.5" stroke-linecap="round"/><line x1="9" y1="13" x2="17" y2="13" stroke="white" stroke-width="1.5" stroke-linecap="round"/><line x1="9" y1="17" x2="13" y2="17" stroke="white" stroke-width="1.5" stroke-linecap="round"/>'
+    name: "渝津合数据工作台",
+    desc: "销售经营分析与智能对账，一份 Excel 双工具协同。",
+    domain: "jyfx.onrender.com",
+    url: "https://jyfx.onrender.com/",
+    type: "Python",
+    color: "#17694c",
+    icon: "workspace"
   },
   {
-    name: "二维码", domain: "erweima-g2e5.onrender.com",
-    url: "https://erweima-g2e5.onrender.com", type: "static",
-    color: "#ea4335",
-    icon: '<rect x="4" y="4" width="7" height="7" rx="1.2" fill="white"/><rect x="15" y="4" width="7" height="7" rx="1.2" fill="white"/><rect x="4" y="15" width="7" height="7" rx="1.2" fill="white"/><rect x="15" y="15" width="3" height="3" rx="0.8" fill="white"/><rect x="19" y="15" width="3" height="3" rx="0.8" fill="white"/><rect x="15" y="19" width="3" height="3" rx="0.8" fill="white"/>'
+    name: "销售订单经营数据",
+    desc: "销售穿透、客户价值与经营风险决策看板。",
+    domain: "ddzsde.onrender.com",
+    url: "https://ddzsde.onrender.com/",
+    type: "静态页",
+    color: "#2456a6",
+    icon: "chart"
   },
   {
-    name: "水量计算", domain: "shuiliang.onrender.com",
-    url: "https://shuiliang.onrender.com", type: "static",
-    color: "#34a853",
-    icon: '<path d="M13 3C13 3 22 12 22 17C22 20.9 18.4 24 14 24C11.4 24 9.1 22.8 7.6 20.8C6.1 18.9 5.5 16.4 6 14" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round"/><path d="M13 3L13 12" stroke="white" stroke-width="1.8" stroke-linecap="round"/>'
+    name: "智汇薪勤",
+    desc: "人员档案、考勤与薪酬的一体化管理工具。",
+    domain: "gzxj.onrender.com",
+    url: "https://gzxj.onrender.com/",
+    type: "静态页",
+    color: "#7a4330",
+    icon: "people"
   },
   {
-    name: "数据分析", domain: "fxgongju.onrender.com",
-    url: "https://fxgongju.onrender.com", type: "static",
-    color: "#f9ab00",
-    icon: '<rect x="5" y="15" width="4" height="8" rx="1" fill="white"/><rect x="11" y="10" width="4" height="13" rx="1" fill="white"/><rect x="17" y="6" width="4" height="17" rx="1" fill="white"/>'
-  },
-  {
-    name: "水电气费用分析", domain: "sdqf.onrender.com",
-    url: "https://sdqf.onrender.com/", type: "static",
+    name: "水电气费用分析",
+    desc: "查看能源费用趋势、结构变化与异常波动。",
+    domain: "utility-expense-dashboard.onrender.com",
+    url: "https://utility-expense-dashboard.onrender.com/",
+    type: "静态页",
     color: "#087f73",
-    icon: '<rect x="4" y="15" width="4" height="8" rx="1" fill="white"/><rect x="10" y="11" width="4" height="12" rx="1" fill="white"/><rect x="16" y="7" width="4" height="16" rx="1" fill="white"/><path d="M4 10L9 7L14 9L21 3" fill="none" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>'
+    icon: "energy"
   },
   {
-    name: "渝津合生产 ERP", domain: "slerpzx.onrender.com",
-    url: "https://slerpzx.onrender.com", type: "node",
-    color: "#087a4c",
-    icon: '<path d="M5 4H21V22H5Z" fill="none" stroke="white" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 4V9H17V4M9 14H17M9 18H15" fill="none" stroke="white" stroke-width="1.6" stroke-linecap="round"/>'
-  },
-  {
-    name: "订单制作", domain: "dingdan.onrender.com",
-    url: "https://dingdan.onrender.com", type: "flask",
-    color: "#188038",
-    icon: '<path d="M6 3L6 21L20 21L20 7L15 3Z" fill="none" stroke="white" stroke-width="1.8" stroke-linejoin="round"/><path d="M14 3L14 8L19 8" fill="none" stroke="white" stroke-width="1.8" stroke-linejoin="round"/><line x1="9" y1="13" x2="17" y2="13" stroke="white" stroke-width="1.5" stroke-linecap="round"/><line x1="9" y1="17" x2="15" y2="17" stroke="white" stroke-width="1.5" stroke-linecap="round"/>'
-  },
-  {
-    name: "工伤费率", domain: "gsfl.onrender.com",
-    url: "https://gsfl.onrender.com", type: "flask",
-    color: "#c5221f",
-    icon: '<path d="M12 3L12 7M12 20L12 23" stroke="white" stroke-width="1.8" stroke-linecap="round"/><path d="M7 7L7 6C7 4.3 8.3 3 10 3L14 3C15.7 3 17 4.3 17 6L17 7C17 9.8 14.5 12 12 14C9.5 12 7 9.8 7 7Z" fill="none" stroke="white" stroke-width="1.8"/><line x1="12" y1="16" x2="12" y2="20" stroke="white" stroke-width="1.8" stroke-linecap="round"/>'
-  },
-  {
-    name: "社保缴费", domain: "cqsbjs.onrender.com",
-    url: "https://cqsbjs.onrender.com/", type: "flask",
-    color: "#0f5f9f",
-    icon: '<rect x="5" y="4" width="16" height="18" rx="2" fill="none" stroke="white" stroke-width="1.8"/><path d="M9 9H17M9 13H17M9 17H13" stroke="white" stroke-width="1.5" stroke-linecap="round"/><circle cx="17.5" cy="17.5" r="2.5" fill="none" stroke="white" stroke-width="1.5"/>'
-  },
-  {
-    name: "对账管理", domain: "zd-2h6z.onrender.com",
-    url: "https://zd-2h6z.onrender.com", type: "flask",
-    color: "#1967d2",
-    icon: '<circle cx="13" cy="8" r="5" fill="none" stroke="white" stroke-width="1.8"/><path d="M5 22L10 16" stroke="white" stroke-width="1.8" stroke-linecap="round"/><line x1="8" y1="8" x2="18" y2="8" stroke="white" stroke-width="1.5" stroke-linecap="round"/><line x1="13" y1="3" x2="13" y2="13" stroke="white" stroke-width="1.5" stroke-linecap="round"/>'
-  },
-  {
-    name: "销售单", domain: "recon-system-cr7r.onrender.com",
-    url: "https://recon-system-cr7r.onrender.com", type: "flask",
-    color: "#7b1fa2",
-    icon: '<circle cx="11" cy="11" r="6" fill="none" stroke="white" stroke-width="1.8"/><line x1="15.5" y1="15.5" x2="21" y2="21" stroke="white" stroke-width="1.8" stroke-linecap="round"/><line x1="11" y1="8" x2="11" y2="14" stroke="white" stroke-width="1.5" stroke-linecap="round"/><line x1="8" y1="11" x2="14" y2="11" stroke="white" stroke-width="1.5" stroke-linecap="round"/>'
-  },
+    name: "退休年龄计算",
+    desc: "测算法定退休、弹性退休时间与最低缴费年限。",
+    domain: "txnljs.onrender.com",
+    url: "https://txnljs.onrender.com/",
+    type: "静态页",
+    color: "#7354a4",
+    icon: "calendar"
+  }
 ];
 
-const typeLabel = { static: "静态页", flask: "Flask", node: "Node" };
-const typeTagClass = { static: "tag-static", flask: "tag-flask", node: "tag-node" };
+const legacyProjects = [
+  { name: "厂检报告", desc: "原厂检报告入口。", domain: "changjian.onrender.com", url: "https://changjian.onrender.com", type: "静态页", color: "#1a73e8", icon: "document" },
+  { name: "二维码", desc: "原二维码工具入口。", domain: "erweima-g2e5.onrender.com", url: "https://erweima-g2e5.onrender.com", type: "静态页", color: "#d34d40", icon: "qr" },
+  { name: "水量计算", desc: "原水量计算工具入口。", domain: "shuiliang.onrender.com", url: "https://shuiliang.onrender.com", type: "静态页", color: "#2f8b62", icon: "water" },
+  { name: "数据分析", desc: "原数据分析工具入口。", domain: "fxgongju.onrender.com", url: "https://fxgongju.onrender.com", type: "静态页", color: "#c1871e", icon: "chart" },
+  { name: "水电气费用分析", desc: "原费用分析工具入口。", domain: "sdqf.onrender.com", url: "https://sdqf.onrender.com/", type: "静态页", color: "#087f73", icon: "energy" },
+  { name: "渝津合生产 ERP", desc: "原生产 ERP 系统入口。", domain: "slerpzx.onrender.com", url: "https://slerpzx.onrender.com", type: "Node", color: "#087a4c", icon: "database" },
+  { name: "订单制作", desc: "原订单制作工具入口。", domain: "dingdan.onrender.com", url: "https://dingdan.onrender.com", type: "Flask", color: "#188038", icon: "document" },
+  { name: "工伤费率", desc: "原工伤费率工具入口。", domain: "gsfl.onrender.com", url: "https://gsfl.onrender.com", type: "Flask", color: "#b8433d", icon: "calculator" },
+  { name: "社保缴费", desc: "原社保缴费工具入口。", domain: "cqsbjs.onrender.com", url: "https://cqsbjs.onrender.com/", type: "Flask", color: "#0f5f9f", icon: "calculator" },
+  { name: "对账管理", desc: "原对账管理系统入口。", domain: "zd-2h6z.onrender.com", url: "https://zd-2h6z.onrender.com", type: "Flask", color: "#366ea8", icon: "workspace" },
+  { name: "销售单", desc: "原销售单工具入口。", domain: "recon-system-cr7r.onrender.com", url: "https://recon-system-cr7r.onrender.com", type: "Flask", color: "#75518f", icon: "search" }
+];
 
-document.getElementById('project-count').textContent = `共 ${projects.length} 个项目`;
-document.getElementById('grid').innerHTML = projects.map(p => `
-  <a class="card" href="${p.url}" target="_blank" rel="noopener">
-    <div class="card-icon" style="background:${p.color}">
-      <svg viewBox="0 0 26 26" xmlns="http://www.w3.org/2000/svg">${p.icon}</svg>
-    </div>
-    <div class="card-name">${p.name}</div>
-    <div class="card-domain">${p.domain}</div>
-    <span class="card-tag ${typeTagClass[p.type]}">${typeLabel[p.type]}</span>
-  </a>
-`).join('');
+function renderCards(projects, legacy = false) {
+  return projects.map(project => `
+    <a class="card" href="${project.url}" target="_blank" rel="noopener" style="--accent:${project.color}">
+      <div class="card-top">
+        <span class="card-icon" aria-hidden="true">
+          <svg viewBox="0 0 26 26" xmlns="http://www.w3.org/2000/svg">${icons[project.icon]}</svg>
+        </span>
+        <span class="card-badge${legacy ? " legacy" : ""}">${legacy ? "旧版" : "当前"}</span>
+      </div>
+      <div class="card-name">${project.name}</div>
+      <div class="card-desc">${project.desc}</div>
+      <div class="card-foot">
+        <span class="card-domain">${project.domain}</span>
+        <span class="card-type">${project.type}</span>
+      </div>
+    </a>
+  `).join("");
+}
+
+document.getElementById("current-grid").innerHTML = renderCards(currentProjects);
+document.getElementById("legacy-grid").innerHTML = renderCards(legacyProjects, true);
+document.getElementById("current-count").textContent = currentProjects.length;
+document.getElementById("legacy-count").textContent = legacyProjects.length;
+document.getElementById("total-count").textContent = `共 ${currentProjects.length + legacyProjects.length} 个入口`;
 </script>
 </body>
 </html>
